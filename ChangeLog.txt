@@ -1,0 +1,5 @@
+**Echap Project**
+
+* 02/02/2011 : Initial version of Alinea.Echap
+* 02/02/2011: First documentation layout
+* 02/02/2011: Modelling sprint
