@@ -170,7 +170,7 @@ def gap_fraction():
             'Rht3':{'19/01/2011':'T1-90','18/04/2011':'T1-1','27/04/2011':'T2-14','01/06/2011':'T2+21'},
             'Tremie12':{'09/03/2012':'T1-33', '11/04/2012':'T1','09/05/2012':'T2'},
             'Tremie13':{'17/04/2013':'T1-8','26/04/2013':'T1+1', '29/05/2013':'T2+12','13/06/2013':'T2+27'}}
-    df['treatment'] = map(lambda (var,d): tags[var][d], zip(df['variety'], df['date']))
+    df['treatment'] = map(lambda var,d: tags[var][d], zip(df['variety'], df['date']))
     
     return df.groupby(['variety','treatment']).agg('mean').reset_index()
     
@@ -179,7 +179,7 @@ def scan_data():
     df = pandas.read_csv(data_file, decimal='.', sep=',')
     tags = {'Tremie12':{'09/03/2012':'T1-33', '02/04/2012':'T1-9', '11/04/2012':'T1','09/05/2012':'T2'},
             'Tremie13':{'22/04/2013':'T1-3', '03/05/2013':'T2-14'}}
-    df['treatment'] = map(lambda (var,d): tags[var][d], zip(df['variety'], df['prelevement']))
+    df['treatment'] = map(lambda var,d: tags[var][d], zip(df['variety'], df['prelevement']))
     df = df[df['id_Axe'] == "MB"]
     #add aggregator
     df['axe'] = 'MS'
@@ -203,7 +203,7 @@ def silhouettes():
     df = df[~((df['harvest']==2) & (df['plant'].isin([19, 20, 21])))]
     tags = {'Tremie12':{'1':'T1-33', '2': 'T1', '3': 'T2', '4':'T2+34'},
             'Tremie13': {'5': 'T1+4'}}
-    df['treatment'] = map(lambda (var, h): tags[var][str(h)], zip(df['variety'], df['harvest']))
+    df['treatment'] = map(lambda var, h: tags[var][str(h)], zip(df['variety'], df['harvest']))
     # reduce to projection factor / hins
     def _compress(x):
         return pandas.Series({'HS':x['HS'].values[0], 'insertion_height':x['hins'].values[0], 
@@ -246,7 +246,7 @@ def haun_stages():
                            
     df_HS = df_HS.reset_index()
     df_HS = df_HS[df_HS['Date'].isin(reduce(lambda x,y: x+y, [tags[v].keys() for v in tags],[]))]
-    df_HS['treatment'] = map(lambda (var,d): tags[var][d.strftime('%Y-%m-%d')], zip(df_HS['label'], df_HS['Date']))
+    df_HS['treatment'] = map(lambda var,d: tags[var][d.strftime('%Y-%m-%d')], zip(df_HS['label'], df_HS['Date']))
     df_HS = df_HS.reset_index().set_index('label')
     
     return df_HS
